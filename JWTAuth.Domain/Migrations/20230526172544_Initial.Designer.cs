@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JWTAuth.Domain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230526155743_Initial")]
+    [Migration("20230526172544_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

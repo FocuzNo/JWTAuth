@@ -71,7 +71,7 @@ namespace JWTAuth.Controllers
             return Ok(token);
         }
 
-        [HttpPost("RefreshToken")]
+        [HttpPost("RefreshToken"), Authorize]
         public ActionResult<string> RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"];

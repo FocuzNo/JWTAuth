@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using JWTAuth.Domain.Entities;
 
 namespace JWTAuth.Service.IRepository
 {
     public interface ICRUDRepository
     {
-        void GetAllUsers();
+        List<User> GetAllUsers();
+        void Create(RegisterUser user);
+        void Update(User user);
+        void Delete(string name);
     }
 }
