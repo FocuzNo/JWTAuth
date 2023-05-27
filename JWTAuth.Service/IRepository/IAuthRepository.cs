@@ -6,5 +6,6 @@ namespace JWTAuth.Service.IRepository
     {
         void RegisterAccount(RegisterUser registerUser);
         string GenerateToken(User user);
+        RefreshToken GenerateRefreshToken();
     }
 }

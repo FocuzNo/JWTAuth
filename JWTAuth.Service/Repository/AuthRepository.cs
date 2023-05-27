@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace JWTAuth.Service
@@ -13,6 +14,7 @@ namespace JWTAuth.Service
     {
         private readonly IConfiguration _configuration;
         private readonly DataContext _dataContext;
+
         private static User user = new();
 
         public AuthRepository(DataContext dataContext, IConfiguration configuration)
@@ -36,7 +38,9 @@ namespace JWTAuth.Service
         {
             List<Claim> claims = new List<Claim>()
             {
-            new Claim(ClaimTypes.Name, user.Username!)
+                new Claim(ClaimTypes.Name, user.Username!),
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Role, "User"),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
@@ -46,13 +50,24 @@ namespace JWTAuth.Service
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddHours(10),
+                expires: DateTime.Now.AddHours(1),
                 signingCredentials: signCred
             );
 
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwtToken;
+        }
+
+        public RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Expires = DateTime.Now.AddDays(3)
+            };
+
+            return refreshToken;
         }
     }
 }
